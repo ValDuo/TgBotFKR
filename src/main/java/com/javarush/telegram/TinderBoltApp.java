@@ -42,7 +42,6 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             //sendPhotoMessage("main");
             String text = loadMessage("main");
             sendTextMessage(text);
-            sendTextButtonsMessage("dfs", "");
             sendTextButtonsMessage("Основные вопросы:",
                     "Почему нет ответа на мое обращение?", "otvet",
                     "Как связаться с Вами? ", "message");
