@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="TBot">
+  <artifact type="jar" build-on-make="true" name="TinderBolt-1.0-SNAPSHOT">
     <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="TBot.jar">
+    <root id="archive" name="TinderBolt-1.0-SNAPSHOT.jar">
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
       </element>

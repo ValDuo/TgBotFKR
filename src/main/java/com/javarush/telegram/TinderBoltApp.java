@@ -12,25 +12,54 @@ import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import static cn.hutool.core.lang.Console.print;
 
 
 public class TinderBoltApp extends MultiSessionTelegramBot {
-    public static final String TELEGRAM_BOT_NAME = ConfigLoader.getBotName();
-    public static final String TELEGRAM_BOT_TOKEN = ConfigLoader.getBotToken();
-    public static final String OPEN_AI_TOKEN = ConfigLoader.getAIToken();
+    private static final Properties props = new Properties();
     private static final Logger log = LoggerFactory.getLogger(TinderBoltApp.class);
+
+    //получение данных конфиги
+    static {
+        try (InputStream input = TinderBoltApp.class.getClassLoader()
+                .getResourceAsStream("config.properties")) {
+
+            if (input == null) {
+                throw new IllegalStateException("Файл config.properties не найден в classpath");
+            }
+            props.load(input);
+
+        } catch (Exception e) {
+            log.error("Ошибка загрузки конфигурации", e);
+            throw new RuntimeException("Не удалось загрузить конфигурацию", e);
+        }
+    }
+
+    public static final String TELEGRAM_BOT_NAME = getRequiredProperty("BOT_NAME");
+    public static final String TELEGRAM_BOT_TOKEN = getRequiredProperty("BOT_TOKEN");
+    public static final String OPEN_AI_TOKEN = getRequiredProperty("AI_TOKEN");
+
+    private static String getRequiredProperty(String key) {
+        String value = props.getProperty(key);
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalStateException("Не найден обязательный параметр: " + key);
+        }
+        return value.trim();
+    }
 
     private ChatGPTService chatGPT = new ChatGPTService(OPEN_AI_TOKEN);
     private DialogMode currentMode = null;
 
-    private UserInfo she;
-    private UserInfo me;
-    private int questionCount;
-
     public TinderBoltApp() {
+
         super(TELEGRAM_BOT_NAME, TELEGRAM_BOT_TOKEN);
     }
 
@@ -305,6 +334,9 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         showMainMenu("Главное меню бота", "/start");
 
     }
-
+    public static void main(String[] args) throws TelegramApiException {
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+        telegramBotsApi.registerBot(new TinderBoltApp());
+    }
 
 }
