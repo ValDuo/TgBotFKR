@@ -1,4 +1,4 @@
 FROM openjdk:21
-WORKDIR /src/main/java/com/javarush/telegram
-COPY TinderBoltApp.java .
-CMD ["java", "-jar", "tgbot.jar"]
+WORKDIR /app
+COPY target/TinderBolt-1.0-SNAPSHOT.jar app.jar
+CMD ["java", "-jar", "app.jar"]

@@ -4,6 +4,7 @@ import com.javarush.telegram.ChatGPTService;
 import com.javarush.telegram.DialogMode;
 import com.javarush.telegram.MultiSessionTelegramBot;
 import com.javarush.telegram.UserInfo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -15,15 +16,15 @@ import java.util.ArrayList;
 
 import static cn.hutool.core.lang.Console.print;
 
+
 public class TinderBoltApp extends MultiSessionTelegramBot {
-    public static final String TELEGRAM_BOT_NAME = "fkr61bot";
-    public static final String TELEGRAM_BOT_TOKEN = "7730819814:AAGkZZEqeYzh4PPkOdka_Z4s_6XK1RLd-Yw";
-    public static final String OPEN_AI_TOKEN = "gpt:4dws6NYyD0BDK2ufp71ZJFkblB3TCC3tppbmX6OYmhSFydbM";
+    public static final String TELEGRAM_BOT_NAME = ConfigLoader.getBotName();
+    public static final String TELEGRAM_BOT_TOKEN = ConfigLoader.getBotToken();
+    public static final String OPEN_AI_TOKEN = ConfigLoader.getAIToken();
     private static final Logger log = LoggerFactory.getLogger(TinderBoltApp.class);
 
     private ChatGPTService chatGPT = new ChatGPTService(OPEN_AI_TOKEN);
     private DialogMode currentMode = null;
-    private ArrayList<String> list = new ArrayList<>();
 
     private UserInfo she;
     private UserInfo me;
@@ -305,8 +306,5 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 
     }
 
-    public static void main(String[] args) throws TelegramApiException {
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(new TinderBoltApp());
-    }
+
 }
