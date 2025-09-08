@@ -1,9 +1,4 @@
-package com.javarush.telegram;
-
-import com.javarush.telegram.ChatGPTService;
-import com.javarush.telegram.DialogMode;
-import com.javarush.telegram.MultiSessionTelegramBot;
-import com.javarush.telegram.UserInfo;
+package telegram;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,24 +7,19 @@ import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
 
 import static cn.hutool.core.lang.Console.print;
 
 
-public class TinderBoltApp extends MultiSessionTelegramBot {
+public class BotApp extends MultiSessionTelegramBot {
     private static final Properties props = new Properties();
-    private static final Logger log = LoggerFactory.getLogger(TinderBoltApp.class);
+    private static final Logger log = LoggerFactory.getLogger(BotApp.class);
 
     //получение данных конфиги
     static {
-        try (InputStream input = TinderBoltApp.class.getClassLoader()
+        try (InputStream input = BotApp.class.getClassLoader()
                 .getResourceAsStream("config.properties")) {
 
             if (input == null) {
@@ -58,7 +48,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     private ChatGPTService chatGPT = new ChatGPTService(OPEN_AI_TOKEN);
     private DialogMode currentMode = null;
 
-    public TinderBoltApp() {
+    public BotApp() {
 
         super(TELEGRAM_BOT_NAME, TELEGRAM_BOT_TOKEN);
     }
@@ -336,7 +326,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     }
     public static void main(String[] args) throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(new TinderBoltApp());
+        telegramBotsApi.registerBot(new BotApp());
     }
 
 }
