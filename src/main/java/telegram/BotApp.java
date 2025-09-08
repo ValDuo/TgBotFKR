@@ -77,13 +77,20 @@ public class BotApp extends MultiSessionTelegramBot {
             return;
         }
 
-//        if(message.equals("/gpt")){
-//            currentMode = DialogMode.GPT;
-//            String text = loadMessage("gpt");
-//            sendPhotoMessage("gpt");
-//            sendTextMessage(text);
-//            return;
-//        }
+        if(message.equals("/gpt")){
+            currentMode = DialogMode.GPT;
+            String text = loadMessage("gpt");
+            sendPhotoMessage("gpt");
+            sendTextMessage("Напишите любое сообщение и посмотрим, что вам ответит *наша нейросеть*: ");
+            String question = getMessageText();
+
+            String promt = loadPrompt(question);
+            Message msg = sendTextMessage("Подождите пару секунд - ChatGPT думает...");
+            String answer = chatGPT.sendMessage(promt,question);
+            updateTextMessage(msg, answer);
+
+            return;
+        }
 
         if (currentMode == DialogMode.MAIN && !isMessageCommand()){
             String query = getCallbackQueryButtonKey();
@@ -188,140 +195,10 @@ public class BotApp extends MultiSessionTelegramBot {
 
         }
 
-//
-//        if(currentMode == DialogMode.DATE && !isMessageCommand()){
-//            String query = getCallbackQueryButtonKey();
-//            if(query.startsWith("date_")){
-//                sendPhotoMessage(query);
-//                sendTextMessage("Отличный выбор! \nТвоя задача пригласить девушку/парня на свидание за 5 сообщений: ");
-//
-//                String promt = loadPrompt(query);
-//                chatGPT.setPrompt(promt);
-//                return;
-//            }
-//
-//
-//            Message msg = sendTextMessage("Подождите, собеседник набирает текст...");
-//            String answer = chatGPT.addMessage(message);
-//            updateTextMessage(msg, answer);
-//            return;
-//        }
-//
-//        if(message.equals("/message")){
-//            currentMode = DialogMode.MESSAGE;
-//            sendPhotoMessage("message");
-//            sendTextButtonsMessage("Пришлите в чат вашу переписку","Следующее сообщение","message_next",
-//                    "Пригласить на свидание","message_date");
-//            return;
-//        }
-//
-//        if(currentMode == DialogMode.MESSAGE && !isMessageCommand()){
-//            String query = getCallbackQueryButtonKey();
-//            if(query.startsWith("message_")){
-//                String promt = loadPrompt(query);
-//                String userChatList = String.join("\n\n", list);
-//
-//                Message msg = sendTextMessage("Подождите пару секунд - ChatGPT думает...");
-//                String answer = chatGPT.sendMessage(promt, userChatList);
-//                updateTextMessage(msg, answer);
-//                return;
-//            }
-//            list.add(message);
-//            return;
-//        }
-//
-//        if(message.equals("/profile")){
-//            currentMode = DialogMode.PROFILE;
-//            sendPhotoMessage("profile");
-//
-//            me = new UserInfo();
-//            questionCount = 1;
-//            sendTextMessage("Сколько вам лет?");
-//            return;
-//        }
-//
-//        if(currentMode == DialogMode.PROFILE && !isMessageCommand()){
-//            switch (questionCount){
-//                case 1:
-//                    me.age = message;
-//                    questionCount = 2;
-//                    sendTextMessage("Кем вы работаете?");
-//                    return;
-//                case 2:
-//                    me.occupation = message;
-//                    questionCount = 3;
-//                    sendTextMessage("У вас есть хобби?");
-//                    return;
-//                case 3:
-//                    me.hobby = message;
-//                    questionCount = 4;
-//                    sendTextMessage("Что вам не нравится в людях?");
-//                    return;
-//                case 4:
-//                    me.hobby = message;
-//                    questionCount = 5;
-//                    sendTextMessage("Цель знакомства?");
-//                    return;
-//                case 5:
-//                    me.goals = message;
-//
-//                    String aboutMyself = me.toString();
-//                    String promt = loadPrompt("profile");
-//                    Message msg = sendTextMessage("Подождите пару секунд - ChatGPT думает...");
-//                    String answer = chatGPT.sendMessage(promt, aboutMyself);
-//                    updateTextMessage(msg,answer);
-//                    return;
-//            }
-//            return;
-//        }
-//
-//        if(message.equals("/opener")){
-//            currentMode = DialogMode.OPENER;
-//            sendPhotoMessage("opener");
-//
-//            she = new UserInfo();
-//            questionCount = 1;
-//            sendTextMessage("Пришли информацию о человеке для знакомства:\nИмя девушки?");
-//            return;
-//        }
-//
-//        if(currentMode == DialogMode.OPENER && !isMessageCommand()){
-//            switch (questionCount){
-//                case 1:
-//                    she.name = message;
-//                    questionCount = 2;
-//                    sendTextMessage("Сколько ей лет?");
-//                    return;
-//                case 2:
-//                    she.age = message;
-//                    questionCount = 3;
-//                    sendTextMessage("Есть ли у нее хобби?");
-//                    return;
-//                case 3:
-//                    she.hobby = message;
-//                    questionCount = 4;
-//                    sendTextMessage("Кем она работает?");
-//                    return;
-//                case 4:
-//                    she.occupation = message;
-//                    questionCount = 5;
-//                    sendTextMessage("Цель знакомства?");
-//                    return;
-//                case 5:
-//                    she.goals = message;
-//                    String aboutFriend = message;
-//                    String promt = loadPrompt("opener");
-//                    Message msg = sendTextMessage("Подождите пару секунд - ChatGPT думает...");
-//                    String answer = chatGPT.sendMessage(promt, aboutFriend);
-//                    updateTextMessage(msg,answer);
-//                    return;
-//            }
-//            return;
-//        }
-//
 
-        sendTextMessage("Отправьте мне одну из существующих команд: " + message);
-        showMainMenu("Главное меню бота", "/start");
+
+        sendTextMessage("Отправьте мне одну из существующих команд из Menu" );
+        showMainMenu("- открыть главное меню бота", "/start", "- задать вопрос искусственному интеллекту", "/gpt");
 
     }
     public static void main(String[] args) throws TelegramApiException {
