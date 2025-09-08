@@ -73,7 +73,7 @@ public class BotApp extends MultiSessionTelegramBot {
                     "Как получать квитанцию на электронную почту?", "kvitancia",
                     "Другой вопрос", "another");
 
-            showMainMenu("Главное меню бота", "/start");
+            showMainMenu("- открыть главное меню бота", "/start", "- задать вопрос искусственному интеллекту", "/gpt");
             return;
         }
 
@@ -187,14 +187,13 @@ public class BotApp extends MultiSessionTelegramBot {
                         "Как получать квитанцию на электронную почту?", "kvitancia",
                         "Другой вопрос", "another");
 
-                showMainMenu("Главное меню бота", "/start");
+                showMainMenu("- открыть главное меню бота", "/start", "- задать вопрос искусственному интеллекту", "/gpt");
                 return;
             }
 
 
 
         }
-
 
 
         sendTextMessage("Отправьте мне одну из существующих команд из Menu" );
