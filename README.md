@@ -9,5 +9,6 @@
 Рабочий функционал может быть протестирован в Телеграме: *@fkr61bot*
 
 <img width="456" height="122" alt="image" src="https://github.com/user-attachments/assets/f66e7f05-0cae-41c9-8f55-9cdd77b1ed24" />
+
 <img width="534" height="743" alt="image" src="https://github.com/user-attachments/assets/d3b24d68-4f79-4e6e-bc94-65e5e5336a18" />
 
